@@ -5,12 +5,13 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id 'org.springframework.boot' version '2.3.4.RELEASE'
 }
 
 repositories {
     mavenLocal()
     maven {
-        url = uri('http://repo.maven.apache.org/maven2')
+        url = uri('https://repo1.maven.org/maven2')
     }
 }
 
@@ -18,7 +19,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web:2.3.4.RELEASE'
     implementation 'com.google.code.gson:gson:2.6'
     runtimeOnly 'org.springframework.boot:spring-boot-devtools:2.3.4.RELEASE'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.3.4.RELEASE'
+    testImplementation('org.springframework.boot:spring-boot-starter-test:2.3.4.RELEASE') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }        
 }
 
 group = 'com.devopsusach2020'
@@ -36,4 +39,8 @@ publishing {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+}
+
+test {
+ useJUnitPlatform()
 }
