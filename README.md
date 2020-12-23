@@ -2,40 +2,18 @@
 
 ## Windows
 
-### Compile Code
-* ./mvnw.cmd clean compile -e
-
-### Test Code
-* ./mvnw.cmd clean test -e
-
-### Jar Code
-* ./mvnw.cmd clean package -e
+### Compile Code Test  Jar Code
+* gradle clean build
 
 ### Run Jar
-* Local:      ./mvnw.cmd spring-boot:run 
-* Background: nohup bash mvnw.cmd spring-boot:run &
+* Local:  gradle bootRun  
+
 
 ### Testing Application
-* Abrir navegador: http://localhost:8080/rest/mscovid/test?msg=testing
-
-## Linux
-
-### Compile Code
-* ./mvnw clean compile -e
-
-### Test Code
-* ./mvnw clean test -e
-
-### Jar Code
-* ./mvnw clean package -e
-
-### Run Jar
-* Local:      ./mvnw spring-boot:run 
-* Background: nohup bash mvnw spring-boot:run &
+* Abrir navegador: http://localhost:8081/rest/mscovid/test?msg=testing
 
 ### Testing Application
-* curl -X GET 'http://localhost:8080/rest/mscovid/test?msg=testing'
-
+* curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'
 
 # Jenkins Shared Libraries
 - Jenkins Shared Libraries: https://www.jenkins.io/doc/book/pipeline/shared-libraries/
