@@ -1,6 +1,6 @@
 # Getting Started
 
-## Windows 5036
+## Windows 5036g
 
 ### Compile Code
 * ./mvnw.cmd clean compile -e
