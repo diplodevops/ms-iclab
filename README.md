@@ -1,6 +1,6 @@
 # Getting Started
 
-## Windows 9
+## Windows 45
 
 ### Compile Code
 * ./mvnw.cmd clean compile -e
