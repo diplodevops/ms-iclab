@@ -1,6 +1,6 @@
 # Getting Started
 
-## Windows 50
+## Windows 9
 
 ### Compile Code
 * ./mvnw.cmd clean compile -e
