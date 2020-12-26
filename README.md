@@ -1,6 +1,6 @@
 # Getting Started
 
-## Windows 30
+## Windows 40
 
 ### Compile Code
 * ./mvnw.cmd clean compile -e
