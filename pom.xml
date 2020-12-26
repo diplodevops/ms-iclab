@@ -53,26 +53,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<plugin>
-                <groupId>external.atlassian.jgitflow</groupId>
-                <artifactId>jgitflow-maven-plugin</artifactId>
-                <version>1.5-SNAPSHOT</version>
-                <configuration>
-                    <pushFeatures>true</pushFeatures>
-                    <pushHotfixes>true</pushHotfixes>
-                    <pushReleases>true</pushReleases>
-                    <enableSshAgent>true</enableSshAgent>
-                    <noDeploy>true</noDeploy>
-                    <flowInitContext>
-                        <masterBranchName>main</masterBranchName>
-                        <developBranchName>develop</developBranchName>
-                        <featureBranchPrefix>feature/</featureBranchPrefix>
-                        <releaseBranchPrefix>release/</releaseBranchPrefix>
-                        <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
-                        <versionTagPrefix>v</versionTagPrefix>
-                    </flowInitContext>
-                </configuration>
-            </plugin>
 		</plugins>
 
 		<directory>build</directory>
