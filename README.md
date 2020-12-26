@@ -1,6 +1,6 @@
 # Getting Started
 
-## Windows
+## Windows 20
 
 ### Compile Code
 * ./mvnw.cmd clean compile -e
