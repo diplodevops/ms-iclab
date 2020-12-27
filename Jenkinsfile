@@ -1,3 +1,3 @@
 library 'pipeline-dev'
 
-pipe.call()
+main.call()
