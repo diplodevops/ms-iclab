@@ -1,3 +1,3 @@
-library 'pipeline@dev'
+library 'pipeline-dev'
 
 pipe.call()
