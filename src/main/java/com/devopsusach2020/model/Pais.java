@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Pais implements Serializable{
 
 	/**
-	 * 
+	 * Se agrega comentantario para hacer commit
 	 */
 	private static final long serialVersionUID = -2988002029080131424L;
 	
