@@ -1,4 +1,4 @@
-@Library('jenkinsfile-shared-library@feature/lab3-sl') _
+@Library('jenkinsfile-shared-library@testmacc') _
 
 pipeline {
     agent any
