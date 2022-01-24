@@ -1,4 +1,4 @@
 @Library('jenkinsfile-shared-library@testmacc2') _
-integracioncontinua.call(
+orquestador.call(
      VERSION:"0.0.16"
 )
