@@ -1,7 +1,7 @@
 @Library('jenkinsfile-shared-library@testmacc2') _
 if ((env.BRANCH_NAME =~ '.*feature.*').matches()) {
      echo "Rama Feature"
-    integracioncontinua.ci(
+    integracioncontinua.call(
         VERSION:"0.0.16"
     )
 } else if ((env.BRANCH_NAME =~ '.*release.*').matches()) {
