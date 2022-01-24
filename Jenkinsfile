@@ -6,7 +6,7 @@ if ((env.BRANCH_NAME =~ '.*feature.*').matches()) {
     )
 } else if ((env.BRANCH_NAME =~ '.*release.*').matches()) {
     echo "Rama Release"
-    desplieguecontinuo.cd(
+    desplieguecontinuo.call(
         VERSION:"0.0.16"
     )
 } else {
