@@ -11,7 +11,7 @@ pipeline {
 		stage('Integracion'){
 			steps{
 				script{
-                    integracioncontinua.citest()
+                    integracioncontinua.ci()
                 }
 			}
 		}
