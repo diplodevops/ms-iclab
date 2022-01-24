@@ -9,7 +9,7 @@ pipeline {
 		stage('Integracion'){
 			steps{
 				script{
-                    integracioncontinua.citest1()
+                    devops.citest1()
                 }
 			}
 		}
