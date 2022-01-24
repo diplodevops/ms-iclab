@@ -1,6 +1,6 @@
 @Library('jenkinsfile-shared-library@testmacc2') _
-if ((env.BRANCH_NAME =~ '.*feature.*').matches()) {
-     echo "Rama Feature"
+if ((env.BRANCH_NAME =~ '.*feature.*').matches() || (env.BRANCH_NAME =~ '.*develop.*').matches() ) {
+     echo "Rama Feature o develop"
     integracioncontinua.call(
         VERSION:"0.0.16"
     )
