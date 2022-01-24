@@ -1,5 +1,5 @@
 @Library('jenkinsfile-shared-library@testmacc') _
-import cl.dipdevops.usach.grupo5
+import cl.dipdevops.usach.grupo5.Devops
 def devops = new Devops()
 
 pipeline {
