@@ -4,7 +4,9 @@ if ((env.BRANCH_NAME =~ '.*feature.*').matches()) {
         VERSION:"0.0.16"
     )
 } else if ((env.BRANCH_NAME =~ '.*release.*').matches()) {
-    echo "en release"
+    desplieguecontinuo.call(
+        VERSION:"0.0.16"
+    )
 } else {
-    echo "mal formato"
+    echo "Su rama tiene formato erroneo o esta intentando ejecutar desde la rama master."
 }
