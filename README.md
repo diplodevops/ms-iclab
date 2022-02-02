@@ -1,24 +1,18 @@
 # Getting Started
 
-## Windows
+##Gradle
 
-### Compile Code
-* ./mvnw.cmd clean compile -e
+###Build
+* Compile, test, jar: gradle build
 
-### Test Code
-* ./mvnw.cmd clean test -e
+###Run
+* Run: gradle bootRun (verificar modo background)
 
-### Jar Code
-* ./mvnw.cmd clean package -e
+###Test
+* Test: curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'
 
-### Run Jar
-* Local:      ./mvnw.cmd spring-boot:run 
-* Background: nohup bash mvnw.cmd spring-boot:run &
 
-### Testing Application
-* Abrir navegador: http://localhost:8080/rest/mscovid/test?msg=testing
-
-## Linux
+## Maven
 
 ### Compile Code
 * ./mvnw clean compile -e
