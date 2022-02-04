@@ -1,2 +1,2 @@
-library 'pipeline-iclab'
+library 'pipeline'
 ejecucion.call()
