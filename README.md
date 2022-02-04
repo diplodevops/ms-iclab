@@ -27,7 +27,7 @@
 * ./mvnw clean test -e
 
 ### Jar Code
-* ./mvnw clean package -e
+* ./mvnw clean package 
 
 ### Run Jar
 * Local:      ./mvnw spring-boot:run 
