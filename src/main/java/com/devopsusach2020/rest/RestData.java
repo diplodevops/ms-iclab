@@ -42,11 +42,16 @@ public class RestData {
 		RestTemplate restTemplate = new RestTemplate();
 	    ResponseEntity<String> call= restTemplate.getForEntity("https://api.covid19api.com/world/total" ,String.class);
 	    Mundial response = new Mundial();
-		Gson gson = new Gson();
-        Mundial estado = gson.fromJson(call.getBody().toLowerCase(), Mundial.class);
-        response.setTotalConfirmed(estado.getTotalConfirmed());
-        response.setTotalDeaths(estado.getTotalDeaths());
-        response.setTotalRecovered(estado.getTotalRecovered());
+		
+		String body = call.getBody();
+		if(body != null){
+			Mundial estado = gson.fromJson(call.getBody().toLowerCase(), Mundial.class);
+			response.setTotalConfirmed(estado.getTotalConfirmed());
+			response.setTotalDeaths(estado.getTotalDeaths());
+			response.setTotalRecovered(estado.getTotalRecovered());
+		}
+		
+
 
 		return response;		
 	}
