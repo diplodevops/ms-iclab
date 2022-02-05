@@ -46,7 +46,7 @@ public class RestData {
 
 		String body = call.getBody();
 		if(body != null){
-			Mundial estado = gson.fromJson(call.getBody().toLowerCase(), Mundial.class);
+			Mundial estado = gson.fromJson(body.toLowerCase(), Mundial.class);
 			response.setTotalConfirmed(estado.getTotalConfirmed());
 			response.setTotalDeaths(estado.getTotalDeaths());
 			response.setTotalRecovered(estado.getTotalRecovered());
