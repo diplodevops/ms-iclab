@@ -42,6 +42,7 @@ public class RestData {
 		Gson gson = new Gson();
 
 		String body = call.getBody();
+
 		if(body != null){
 			Mundial estado = gson.fromJson(body.toLowerCase(), Mundial.class);
 			response.setTotalConfirmed(estado.getTotalConfirmed());
@@ -52,5 +53,4 @@ public class RestData {
 
 		return response;		
 	}
-
 }
