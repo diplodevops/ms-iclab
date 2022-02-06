@@ -11,13 +11,11 @@
 	<groupId>com.devopsusach2021</groupId>
 	<artifactId>IClabPrueba-Seccion1-Grupo3</artifactId>
 	<version>0.0.1</version>
-	<name>DevOpsUsach2020-feature-estadomundial_06</name>
+	<name>DevOpsUsach2020-feature-estadomundial_07</name>
 	<description>Proyecto de ejemplo para el desarrollo del diplomado DevOps Universidad de Santiago de Chile 2020</description>
-
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
