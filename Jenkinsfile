@@ -1,2 +1,4 @@
-library 'pipeline-christian'
+
+library 'pipeline'
+
 ejecucion.call()
