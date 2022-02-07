@@ -1,3 +1,3 @@
-library 'pipeline'
+library ('pipeline-laboratorio')
 
 ejecucion.call()
