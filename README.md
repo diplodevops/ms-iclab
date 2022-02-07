@@ -34,4 +34,5 @@
 * Background: nohup bash mvnw spring-boot:run &
 
 ### Testing Application
+
 * curl -X GET 'http://localhost:8080/rest/mscovid/test?msg=testing'
