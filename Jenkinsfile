@@ -1,3 +1,3 @@
-library 'pipeline'
+library 'ms-pipeline'
 
 ejecucion.call()
