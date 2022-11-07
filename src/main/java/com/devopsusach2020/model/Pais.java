@@ -1,63 +1,68 @@
-package com.devopsusach2020.model;
+package com.devopsusach2020.rest;
 
-import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class Pais implements Serializable{
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2988002029080131424L;
+import com.devopsusach2020.model.Pais;
+import com.devopsusach2020.model.Mundial;
+import com.google.gson.Gson;
+
+@RestController
+@RequestMapping(path = "/rest/mscovid")
+public class RestData {
 	
-	private int deaths;
-	private int confirmed;
-	private String date;
-	private String mensaje;
-	private String country;
-	private int recovered;
-	private int active;
+	private final static Logger LOGGER = Logger.getLogger("devops.subnivel.Control");
+
 	
-	
-	public String getMensaje() {
-		return mensaje;
+	@GetMapping(path = "/test", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Pais getData(@RequestParam(name = "msg") String message){
+		
+		LOGGER.log(Level.INFO, "Proceso exitoso de prueba");
+		
+		Pais response = new Pais();
+		response.setMensaje("Mensaje Recibido: " + message);
+		return response;
 	}
-	public void setMensaje(String mensaje) {
-		this.mensaje = mensaje;
-	}
-	public String getCountry() {
-		return country;
-	}
-	public void setCountry(String country) {
-		this.country = country;
-	}
-	public int getDeaths() {
-		return deaths;
-	}
-	public void setDeaths(int deaths) {
-		this.deaths = deaths;
-	}
-	public int getConfirmed() {
-		return confirmed;
-	}
-	public void setConfirmed(int confirmed) {
-		this.confirmed = confirmed;
-	}
-	public int getRecovered() {
-		return recovered;
-	}
-	public void setRecovered(int recovered) {
-		this.recovered = recovered;
-	}
-	public int getActive() {
-		return active;
-	}
-	public void setActive(int active) {
-		this.active = active;
-	}
-	public String getDate() {
-		return date;
-	}
-	public void setDate(String date) {
-		this.date = date;
-	}	
+
+        @GetMapping(path = "/estadoPais", produces = MediaType.APPLICATION_JSON_VALUE)
+
+        public @ResponseBody Pais getTotalPais(@RequestParam(name = "pais") String message){
+            RestTemplate restTemplate = new RestTemplate();
+
+            ResponseEntity<String> call= restTemplate.getForEntity("https://api.covid19api.com/live/country/" + message, String.class);
+
+            LOGGER.log(Level.INFO, "Consulta por pais");
+
+            Pais response = new Pais();
+            int confirmed = 0;
+            int death = 0;
+            int recovered = 0;
+            Gson gson = new Gson();
+            Pais[] estados = gson. fromJson(call.getBody().toLowerCase(), Pais[].class);
+
+            for(Pais estado : estados) {
+                response.setDate(estado.getDate());
+                response.setActive(estado.getActive());
+                confirmed += estado.getConfirmed();
+                death += estado.getDeaths();
+                recovered += estado.getRecovered();
+            }
+
+            response.setConfirmed(confirmed);
+            response.setDeaths(death);
+            response.setRecovered(recovered);
+            response.setCountry(message);
+            response.setMensaje("ok");
+            
+            return response;
+        }
 }
