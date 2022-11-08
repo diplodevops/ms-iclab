@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage('Compilación') {
+        stage('Compilaciï¿½n') {
             steps {
                 sh './mvnw clean compile -e'
             }
@@ -11,6 +11,26 @@ pipeline {
                 sh './mvnw clean test -e'
             }
         }
+
+        stage('AnÃ¡lisis Sonarqube') {
+            environment {
+                scannerHome = tool 'SonarScanner'
+            }
+            steps {
+                 withSonarQubeEnv('SonarServer') {
+                    sh './mvnw sonar:sonar -Dsonar.projectKey=test1 -Dsonar.host.url=http://178.128.155.87:9000 -Dsonar.login=462001c8a1838183ebbe4bf1e0c9ba066b023531'
+                }
+            }
+            
+        }
+        
+        stage("Comprobando Quality Gates") {
+            steps {
+                waitForQualityGate abortPipeline: true
+            }
+        }        
+
+
         stage('Jar Code') {
             steps {
                 sh './mvnw clean package -e'
