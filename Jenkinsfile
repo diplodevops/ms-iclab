@@ -12,23 +12,26 @@ pipeline {
             }
         }
 
-        stage('Análisis Sonarqube') {
+
+       stage('Análisis Sonarqube') {
             environment {
                 scannerHome = tool 'SonarScanner'
             }
             steps {
-                 withSonarQubeEnv('SonarServer') {
-                    sh './mvnw sonar:sonar -Dsonar.projectKey=test1 -Dsonar.host.url=http://178.128.155.87:9000 -Dsonar.login=462001c8a1838183ebbe4bf1e0c9ba066b023531'
+                 withSonarQubeEnv('SonarServer-1') {
+                    sh './mvnw clean verify sonar:sonar -Dsonar.projectKey=lab1-mod3 -Dsonar.host.url=http://178.128.155.87:9000 -Dsonar.login=sqp_3b879c0e3e708f0dbcbfdfdf81b432e84560c4e1'
                 }
             }
             
         }
         
-        stage("Comprobando Quality Gates") {
+        stage("Comprobación Quality gate") {
             steps {
                 waitForQualityGate abortPipeline: true
             }
-        }        
+        }  
+
+
 
 
         stage('Jar Code') {
