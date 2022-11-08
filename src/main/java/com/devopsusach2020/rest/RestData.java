@@ -45,7 +45,7 @@ public class RestData {
 		@GetMapping(path = "/estadoMundial", produces = MediaType.APPLICATION_JSON_VALUE)
 		public @ResponseBody Mundial getTotalMundial(){
 					
-		LOGGER.log(Level.INFO, "Consulta mundial);
+		LOGGER.log(Level.INFO, "Consulta mundial");
 		
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<String> call = restTemplate.getForEntity("https://api.covid19api.com/world/total/" + message, String.class);
