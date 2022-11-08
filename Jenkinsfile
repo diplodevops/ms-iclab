@@ -5,8 +5,24 @@ def COLOR_MAP =[
     'FAILURE': 'danger'
 ]
 
-def getBuildUser(){
-    return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
+def getBuildUser() {
+  def userCause = currentBuild.rawBuild.getCause(Cause.UserIdCause)
+  def upstreamCause = currentBuild.rawBuild.getCause(Cause.UpstreamCause)
+
+  if (userCause) {
+    return userCause.getUserId()
+  } else if (upstreamCause) {
+    def upstreamJob = Jenkins.getInstance().getItemByFullName(upstreamCause.getUpstreamProject(), hudson.model.Job.class)
+    if (upstreamJob) {
+      def upstreamBuild = upstreamJob.getBuildByNumber(upstreamCause.getUpstreamBuild())
+      if (upstreamBuild) {
+        def realUpstreamCause = upstreamBuild.getCause(Cause.UserIdCause)
+        if (realUpstreamCause) {
+          return realUpstreamCause.getUserId()
+        }
+      }
+    }
+  }
 }
 
 pipeline {
