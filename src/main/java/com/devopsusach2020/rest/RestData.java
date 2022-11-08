@@ -1,5 +1,6 @@
 package com.devopsusach2020.rest;
 
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,22 +48,29 @@ public class RestData {
         int death = 0;
         int recovered = 0;
         Gson gson = new Gson();
-        Pais[] estados = gson. fromJson(call.getBody().toLowerCase(), Pais[].class);
 
-        for(Pais estado : estados) {
-            response.setDate(estado.getDate());
-            response.setActive(estado.getActive());
-            confirmed += estado.getConfirmed();
-            death += estado.getDeaths();
-            recovered += estado.getRecovered();
+        String body = call.getBody();
+
+		String s = Optional.ofNullable(body).orElse("");
+		if (!s.trim().isEmpty()) {
+
+            Pais[] estados = gson. fromJson(s.toLowerCase(), Pais[].class);
+
+            for(Pais estado : estados) {
+                response.setDate(estado.getDate());
+                response.setActive(estado.getActive());
+                confirmed += estado.getConfirmed();
+                death += estado.getDeaths();
+                recovered += estado.getRecovered();
+            }
+
+            response.setConfirmed(confirmed);
+            response.setDeaths(death);
+            response.setRecovered(recovered);
+            response.setCountry(message);
+            response.setMensaje("ok");
         }
-
-        response.setConfirmed(confirmed);
-        response.setDeaths(death);
-        response.setRecovered(recovered);
-        response.setCountry(message);
-        response.setMensaje("ok");
-            
+        
         return response;
     }
 }
