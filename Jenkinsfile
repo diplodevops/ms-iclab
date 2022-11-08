@@ -93,7 +93,7 @@ post{
 
         slackSend channel:'#devops-equipo5',
                   color:COLOR_MAP[currentBuild.currentResult],
-                  message: "$*{currentBuild.currentResult}:* ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${BUILD_USER}"
+                  message: "*${currentBuild.currentResult}:* ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${BUILD_USER}"
     }
 }
 
