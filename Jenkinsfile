@@ -11,19 +11,19 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing..'
-                sh "./mvnw.cmd clean test -e"
+                sh "./mvnw clean test -e"
             }
         }
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
-                sh "./mvnw.cmd clean package -e"
+                sh "./mvnw clean package -e"
             }
         }
 	stage ('Run'){
             steps
                 {
-                    echo 'TODO: run'          
+                    echo 'Running....'          
                 }            
         }
         stage ('Clean'){
