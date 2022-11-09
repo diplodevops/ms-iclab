@@ -26,7 +26,7 @@ public class RestData {
 	@GetMapping(path = "/estadoPais", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Pais getTotalPais(@RequestParam(name = "pais") String message){
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<string> call = restTemplate.getForEntity("https://api.covid19api.com/live/country/" + message, String.class);
+		ResponseEntity<String> call = restTemplate.getForEntity("https://api.covid19api.com/live/country/" + message, String.class);
 		LOGGER.log(Level.INFO, "Consulta por pais ");
 		
 		Pais response = new Pais();
