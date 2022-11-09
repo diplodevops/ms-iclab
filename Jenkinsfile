@@ -43,7 +43,7 @@ pipeline {
         stage("Paso 5: Build .Jar"){
             steps {
                 script {
-                    sh "sleep 120"
+                    sh "sleep 30"
                     sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
                 }
             }
