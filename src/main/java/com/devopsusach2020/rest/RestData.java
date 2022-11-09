@@ -32,15 +32,6 @@ public class RestData {
 		response.setMensaje("Mensaje Recibido: " + message);
 		return response;
 	}
-	@GetMapping(path = "/test", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Pais getData(@RequestParam(name = "msg") String message){
-		
-		LOGGER.log(Level.INFO, "Proceso exitoso de prueba");
-		
-		Pais response = new Pais();
-		response.setMensaje("Mensaje Recibido: " + message);
-		return response;
-	}
 	
 		@GetMapping(path = "/estadoMundial", produces = MediaType.APPLICATION_JSON_VALUE)
 		public @ResponseBody Mundial getTotalMundial(){
@@ -48,7 +39,7 @@ public class RestData {
 		LOGGER.log(Level.INFO, "Consulta mundial");
 		
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<String> call = restTemplate.getForEntity("https://api.covid19api.com/world/total/" + message, String.class);
+		ResponseEntity<String> call = restTemplate.getForEntity("https://api.covid19api.com/world/total/" , String.class);
 		Mundial response = new Mundial();
 			   Gson gson = new Gson();
 		Mundial estado = gson.fromJson(call.getBody().toLowerCase(), Mundial.class);
