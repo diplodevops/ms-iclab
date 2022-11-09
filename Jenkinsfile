@@ -32,10 +32,18 @@ pipeline {
                 }
             }
         }
-        stage("Paso 4: Build .Jar"){
+        stage("Paso 4: Run .Jar"){
             steps {
                 script {
-                    sh "sleep 300"
+                sh "echo 'Running .Jar file!'"
+                sh "./mvnw spring-boot:run &"
+                }
+            }
+        }
+        stage("Paso 5: Build .Jar"){
+            steps {
+                script {
+                    sh "sleep 120"
                     sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
                 }
             }
