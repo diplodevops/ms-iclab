@@ -32,6 +32,14 @@ pipeline {
                 }
             }
         }
+        stage("Paso 4: Build .Jar"){
+            steps {
+                script {
+                sh 'sleep 3000'  
+                curl -X GET 'http://localhost:8080/rest/mscovid/test?msg=testing'
+                }
+            }
+        }
     }
     post {
         always {
