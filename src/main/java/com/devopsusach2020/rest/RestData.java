@@ -1,5 +1,6 @@
 package com.devopsusach2020.rest;
 
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.devopsusach2020.model.Pais;
-import com.devopsusach2020.model.Mundial;
 import com.google.gson.Gson;
 
 @RestController
@@ -32,6 +32,7 @@ public class RestData {
 		response.setMensaje("Mensaje Recibido: " + message);
 		return response;
 	}
+
 
     @GetMapping(path = "/estadoMundial", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Mundial getTotalMundial(){
@@ -52,6 +53,48 @@ public class RestData {
         response.setTotalDeaths(estado.getTotalDeaths());
         response.setTotalRecovered(estado.getTotalRecovered());
 
+        return response;
+    }
+
+
+	
+	@GetMapping(path = "/estadoPais", produces = MediaType.APPLICATION_JSON_VALUE)
+
+    public @ResponseBody Pais getTotalPais(@RequestParam(name = "pais") String message){
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<String> call= restTemplate.getForEntity("https://api.covid19api.com/live/country/" + message, String.class);
+
+        LOGGER.log(Level.INFO, "Consulta por pais");
+
+        Pais response = new Pais();
+        int confirmed = 0;
+        int death = 0;
+        int recovered = 0;
+        Gson gson = new Gson();
+
+        String body = call.getBody();
+
+		String s = Optional.ofNullable(body).orElse("");
+		if (!s.trim().isEmpty()) {
+
+            Pais[] estados = gson. fromJson(s.toLowerCase(), Pais[].class);
+
+            for(Pais estado : estados) {
+                response.setDate(estado.getDate());
+                response.setActive(estado.getActive());
+                confirmed += estado.getConfirmed();
+                death += estado.getDeaths();
+                recovered += estado.getRecovered();
+            }
+
+            response.setConfirmed(confirmed);
+            response.setDeaths(death);
+            response.setRecovered(recovered);
+            response.setCountry(message);
+            response.setMensaje("ok");
+        }
+        
         return response;
     }
 
