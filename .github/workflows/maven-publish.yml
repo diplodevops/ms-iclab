@@ -25,7 +25,7 @@ jobs:
         host: drobles.cl       	
         username: ${{ secrets.USERNAME }}    	
         password: ${{ secrets.PASSWORD }} 
-        port: 22	
+        port: ${{ secrets.PORT }} 	
         source: "/home/runner/work/ms-iclab/ms-iclab/build/DevOpsUsach2020-0.0.1.jar"      	
         target: "/home/ec2-user/"	
     - name: Start Service	DevOpsUsach2020
@@ -34,7 +34,7 @@ jobs:
         host: drobles.cl         	
         username: ${{ secrets.USERNAME }}    	
         password: ${{ secrets.PASSWORD }} 
-        port: 22	
+        port: ${{ secrets.PORT }} 	
         script: |	
           mv /home/ec2-user/devops.jar /home/ec2-user/devops-old.jar || true	
           mv /home/ec2-user/github/workspace/build/DevOpsUsach2020-0.0.1.jar /home/ec2-user/devops.jar
