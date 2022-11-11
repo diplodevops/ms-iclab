@@ -16,9 +16,7 @@ jobs:
       with:	
         java-version: '11'	
         distribution: 'temurin'	
-        cache: maven
-    - name: test2  	
-      run: echo ${{ secrets.USERNAME }}   
+        cache: maven  
     - name: Deploy  	
       run: mvn -B package --file pom.xml
     - name: Upload application	
@@ -38,7 +36,6 @@ jobs:
         password: ${{ secrets.PASSWORD }} 
         port: 22	
         script: |	
-          sudo /etc/init.d/devops stop	|| true
           mv /home/ec2-user/devops.jar /home/ec2-user/devops-old.jar || true	
           mv /home/ec2-user/github/workspace/build/DevOpsUsach2020-0.0.1.jar /home/ec2-user/devops.jar
           killall java
