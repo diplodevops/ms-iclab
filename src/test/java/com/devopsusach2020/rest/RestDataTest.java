@@ -21,10 +21,10 @@ public class RestDataTest {
         }
     
         @Bean
-        void testGetTotalPais() {
+        void testGetTotalMundial() {
     
             final RestData rest = new RestData();
-            rest.getTotalPais("pais");
+            rest.getTotalMundial();
     
             
         }    }    
