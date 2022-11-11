@@ -19,3 +19,14 @@ jobs:
         cache: maven	
     - name: Deploy  	
       run: mvn -B package --file pom.xml
+    - name: Upload application	
+      uses: appleboy/scp-action@master	
+      with:       	
+        host: drobles.cl       	
+        username: ec2-user     	
+        password: grupo7	
+        port: 22	
+        source: "/home/runner/work/ms-iclab/ms-iclab/target/*.jar"      	
+        target: "/home/ec2-user/"	
+    - name: test2  	
+      run: echo end
