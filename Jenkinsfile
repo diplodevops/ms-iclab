@@ -15,15 +15,22 @@ pipeline {
                 }
             }
         }
-        stage('Build') {
+        stage('Compile') {
             steps {
-                echo 'Building..'
+                echo 'Compile..'
                 sh "./mvnw clean compile -e"
             }
         }
         stage('Test') {
             steps {
                 echo 'Testing..'
+				sh "./mvnw clean test -e"
+            }
+        }
+		stage('Building') {
+            steps {
+                echo 'Testing..'
+				sh "./mvnw clean package -e"
             }
         }
         stage('Deploy') {
