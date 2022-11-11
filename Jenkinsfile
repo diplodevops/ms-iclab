@@ -1,7 +1,20 @@
 pipeline {
     agent any
-
-    stages {
+	stages {
+        stage('SonarQube analysis') {
+            steps{
+                withSonarQubeEnv('Sonar') {
+					sh 'mvn clean package sonar:sonar'
+                }
+            }
+        }
+        stage("Quality Gate") {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
         stage('Build') {
             steps {
                 echo 'Building..'
@@ -11,27 +24,19 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing..'
-                sh "./mvnw clean test -e"
             }
         }
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
-                sh "./mvnw clean package -e"
             }
         }
-	stage ('Run'){
-            steps
-                {
-                    echo 'Running....'          
-                }            
-        }
-        stage ('Clean'){
+		stage ('Clean'){
             steps
                 {
                     cleanWs()
-                }            
-        }   
- }
-}
+                }
+        }
 
+    }
+}
