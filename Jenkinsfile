@@ -2,28 +2,39 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') 
+
+         stage('Clean') 
+         {
+            steps {
+                cleanWs()
+                  }
+         }
+ 
+        stage('Compile Code') 
         {
             steps {
                 echo 'TODO: build'
                 sh "./mvnw clean compile -e"
             }
         }
-        stage('Test') 
+
+        stage('Test Code') 
         {
             steps {
                 echo 'TODO: test'
                 sh "./mvnw clean test -e"
             }
         }
-        stage('Package') 
+
+        stage('Jar Code') 
         {
             steps {
                 echo 'TODO: package'
                 sh "./mvnw clean package -e"
             }
         }
-        stage('Run') 
+
+        stage('Run Code') 
         {
             steps {
                 echo 'TODO: running'
@@ -31,6 +42,7 @@ pipeline {
                 sleep 25
             }
         }
+
         stage('Testing')
         {
              steps { 
