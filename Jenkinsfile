@@ -3,13 +3,8 @@ pipeline {
 
     stages {
 
-         stage('Clean') 
-         {
-            steps {
-                cleanWs()
-                  }
-         }
- 
+
+
         stage('Compile Code') 
         {
             steps {
