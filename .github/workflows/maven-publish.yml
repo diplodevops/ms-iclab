@@ -16,7 +16,9 @@ jobs:
       with:	
         java-version: '11'	
         distribution: 'temurin'	
-        cache: maven	
+        cache: maven
+    - name: test2  	
+      run: echo ${{ env.USERNAME }}   
     - name: Deploy  	
       run: mvn -B package --file pom.xml
     - name: Upload application	
@@ -28,13 +30,11 @@ jobs:
         port: 22	
         source: "/home/runner/work/ms-iclab/ms-iclab/build/DevOpsUsach2020-0.0.1.jar"      	
         target: "/home/ec2-user/"	
-    - name: test2  	
-      run: echo end
     - name: Start Service	DevOpsUsach2020
       uses: appleboy/ssh-action@master	
       with:	
         host: drobles.cl         	
-        username: ${{ env.USER }}    	
+        username: ${{ env.USERNAME }}    	
         password: ${{ env.PASSWORD }} 
         port: 22	
         script: |	
