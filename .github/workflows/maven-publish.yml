@@ -26,7 +26,7 @@ jobs:
         username: ec2-user     	
         password: grupo7	
         port: 22	
-        source: "/home/runner/work/ms-iclab/ms-iclab/target/*.jar"      	
+        source: "/home/runner/work/ms-iclab/ms-iclab/target/DevOpsUsach2020-2.3.4.RELEASE.jar"      	
         target: "/home/ec2-user/"	
     - name: test2  	
       run: echo end
