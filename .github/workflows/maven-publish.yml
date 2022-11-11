@@ -41,6 +41,5 @@ jobs:
           sudo /etc/init.d/devops stop	|| true
           mv /home/ec2-user/devops.jar /home/ec2-user/devops-old.jar || true	
           mv /home/ec2-user/github/workspace/build/DevOpsUsach2020-0.0.1.jar /home/ec2-user/devops.jar
-          sudo rm -rf /etc/init.d/devops || true	
-          sudo ln -s /home/ec2-user/devops.jar /etc/init.d/devops	
-          /etc/init.d/devops start	
+          killall java
+          java -jar /home/ec2-user/devops.jar &
