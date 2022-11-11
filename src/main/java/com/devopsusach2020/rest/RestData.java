@@ -32,6 +32,7 @@ public class RestData {
 		response.setMensaje("Mensaje Recibido: " + message);
 		return response;
 	}
+
 	
 		@GetMapping(path = "/estadoMundial", produces = MediaType.APPLICATION_JSON_VALUE)
 		public @ResponseBody Mundial getTotalMundial(){
@@ -50,4 +51,14 @@ public class RestData {
 	}
 
 
+}
+
+response.setConfirmed(confirmed);
+response.setDeaths(death);
+response.setRecovered(recovered);
+response.setCountry(message);
+response.setMensaje("ok");
+
+		return response;
+}	
 }
