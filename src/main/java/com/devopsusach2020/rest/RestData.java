@@ -28,4 +28,6 @@ public @ResponseBody Pais getTotalPais(@RequestParam(name = "pais") String messa
         response.setRecovered(recovered);
         response.setCountry(message);
         response.setMensaje("ok");
+        
         return response;
+      }
