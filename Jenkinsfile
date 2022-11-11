@@ -11,26 +11,40 @@ pipeline{
 
         stage('Compile Code') {
             steps {
-                ./mvnw.cmd clean compile -e
+                ./mvnw clean compile -e
             }
         }
 
-        stage('Test Code') {
+        stage('Test Code') 
+        {
             steps {
-                ./mvnw.cmd clean test -e
+                ./mvnw clean test -e
+            }
+        }
+        
+        stage('Jar Code') 
+        {
+            steps {
+                ./mvnw clean package -e
+            }
+        }
+        
+        stage('Run')
+        {
+        steps {
+                echo 'TODO: running'
+                sh "nohup bash mvnw spring-boot:run &"
+                sleep 25
+            }
+        }
+        
+        stage('Testing')
+        {
+             steps {
+                 echo 'TODO: Testing 1 llamada simple'
+                 sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=TestingSimple1'"
             }
         }
 
-        stage('Jar Code') {
-            steps {
-                ./mvnw.cmd clean package -e
-            }
-        }
-
-        stage('Run Jar') {
-            steps {
-                ./mvnw.cmd spring-boot:run
-            }
-        }
     }
 }
