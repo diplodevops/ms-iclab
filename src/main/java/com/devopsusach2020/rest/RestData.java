@@ -32,13 +32,13 @@ public class RestData {
 		response.setMensaje("Mensaje Recibido: " + message);
 		return response;
 	}
-}
-
 
 @GetMapping(path = "/estadoPais", produces = MediaType.APPLICATION_JSON_VALUE)
-public @ResponseBody Pais  getTotalPais(@RequestParam(name = "pais") String message) {
 
-        ResponseEntity <String> call = restTemplate.getForEntity("https://api.covid19api.com/live/country/" + message, String.class);
+public @ResponseBody Pais  getTotalPais(@RequestParam(name = "pais") String message) {
+        
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> call = restTemplate.getForEntity("https://api.covid19api.com/live/country/" + message, String.class);
 
         LOGGER.log(Level.INFO, "Consulta por pais");
 
@@ -66,3 +66,4 @@ public @ResponseBody Pais  getTotalPais(@RequestParam(name = "pais") String mess
         
         return response;
       }
+    }
