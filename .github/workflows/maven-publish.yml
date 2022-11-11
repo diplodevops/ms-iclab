@@ -43,3 +43,5 @@ jobs:
           mv /home/ec2-user/github/workspace/build/DevOpsUsach2020-0.0.1.jar /home/ec2-user/devops.jar
           killall java
           java -jar /home/ec2-user/devops.jar >> /dev/null &
+          sleep(10)
+          curl -X GET 'http://grupo7.drobles.cl/rest/mscovid/test?msg=testing'
