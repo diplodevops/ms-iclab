@@ -43,5 +43,11 @@ jobs:
           mv /home/ec2-user/github/workspace/build/DevOpsUsach2020-0.0.1.jar /home/ec2-user/devops.jar
           killall java
           java -jar /home/ec2-user/devops.jar >> /dev/null &
-          sleep(10)
-          curl -X GET 'http://grupo7.drobles.cl/rest/mscovid/test?msg=testing'
+    - name: Sleep for 10 seconds
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '10s'
+    - name: Test url using Curl
+      run: curl -X GET 'http://grupo7.drobles.cl/rest/mscovid/test?msg=testing'
+      shell: bash    
+    
