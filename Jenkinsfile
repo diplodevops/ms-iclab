@@ -1,51 +1,42 @@
-pipeline{
+pipeline {
     agent any
 
     stages {
-        
-        stage('Clean') {
-            steps {
-                cleanWs()
-            }
-        }
-
-        stage('Compile Code') {
-            steps {
-                ./mvnw clean compile -e
-            }
-        }
-
-        stage('Test Code') 
+        stage('Build') 
         {
             steps {
-                ./mvnw clean test -e
+                echo 'TODO: build'
+                sh "./mvnw clean compile -e"
             }
         }
-        
-        stage('Jar Code') 
+        stage('Test') 
         {
             steps {
-                ./mvnw clean package -e
+                echo 'TODO: test'
+                sh "./mvnw clean test -e"
             }
         }
-        
-        stage('Run')
+        stage('Package') 
         {
-        steps {
+            steps {
+                echo 'TODO: package'
+                sh "./mvnw clean package -e"
+            }
+        }
+        stage('Run') 
+        {
+            steps {
                 echo 'TODO: running'
                 sh "nohup bash mvnw spring-boot:run &"
                 sleep 25
             }
         }
-        
         stage('Testing')
         {
-             steps {
+             steps { 
                  echo 'TODO: Testing 1 llamada simple'
                  sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=TestingSimple1'"
             }
         }
-
     }
 }
-
