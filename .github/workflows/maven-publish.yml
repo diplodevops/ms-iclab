@@ -34,8 +34,8 @@ jobs:
       uses: appleboy/ssh-action@master	
       with:	
         host: drobles.cl         	
-        username: ec2-user     	
-        password: grupo7
+        username: ${{ env.USER }}    	
+        password: ${{ env.PASSWORD }} 
         port: 22	
         script: |	
           sudo /etc/init.d/devops stop	|| true
@@ -48,6 +48,6 @@ jobs:
       with:
         time: '10s'
     - name: Test url using Curl
-      run: curl -X GET 'http://grupo7.drobles.cl/rest/mscovid/test?msg=testing'
+      run: curl -X GET 'http://grupo7.drobles.cl/rest/mscovid/estadoPais?pais=chile'
       shell: bash    
     
