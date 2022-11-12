@@ -41,7 +41,7 @@ pipeline {
              steps { 
                  echo 'TODO: Testing 1 llamada simple'
                  sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=TestingSimple1'"
-            }
-        }
+             }
+         }
     }
 }
