@@ -48,6 +48,14 @@ pipeline {
                 }
             }
         }
+        stage("Paso 6: Analizar en Sonar"){
+            steps {
+                withSonarQubeEnv('sonarqube') {
+                    sh "echo 'Llamando a sonar Service!!'"
+                    sh 'sh mvnw clean verify sonar:sonar'
+                }
+            }
+        }
     }
     post {
         always {
