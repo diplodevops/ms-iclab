@@ -4,6 +4,9 @@ def jsonParse(def json) {
 }
 pipeline {
     agent any
+    environment {
+        //WORKGROUP   = credentials('workgroup-name')
+    }
     stages {
         stage("Paso 1: Compilar"){
             steps {
@@ -57,15 +60,12 @@ pipeline {
             }
         }
     }
-    post {
-        always {
-            sh "echo 'fase always executed post'"
+    post{
+        success{
+            slackSend color: 'good', channel: "${env.channel}", message: "[Grupo7] [${JOB_NAME}] [${BUILD_TAG}][Resultado: Éxito/Success]", teamDomain: 'devopsusach20-lzc3526', tokenCredentialId: 'token-slack'
         }
-        success {
-            sh "echo 'fase success'"
-        }
-        failure {
-            sh "echo 'fase failure'"
+        failure{
+            slackSend color: 'danger',channel: "${env.channel}", message: "[Grupo7] [${env.JOB_NAME}] [${env.STAGE}][Resultado: Éxito/Success]", teamDomain: 'devopsusach20-lzc3526', tokenCredentialId: 'token-slack'
         }
     }
 }
