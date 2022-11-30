@@ -14,7 +14,7 @@ pipeline {
             steps {
                 script {
                     current_stage =env.STAGE_NAME 
-                    sh "echo 'Compile Code $TAG_NAME!'"
+                    sh "echo 'Compile Code'"
                     // Run Maven on a Unix agent.
                     sh "./mvnw clean compile -e"
                 }
@@ -25,7 +25,7 @@ pipeline {
                 script {
                     current_stage =env.STAGE_NAME 
                     sh "echo 'Test Code!'"
-                    sh "plsql" descomentar para fallo
+                    //sh "plsql" descomentar para fallo
                     sh "./mvnw clean test -e"
                 }
             }
