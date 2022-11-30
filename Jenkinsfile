@@ -54,7 +54,7 @@ pipeline {
                 script {
                     current_stage =env.STAGE_NAME 
                     sh "sleep 10"
-                    sh "curl -X GET 'http://jenkins:8081/rest/mscovid/estadoPais?pais=Chile'"
+                    sh "curl -X GET 'http://localhost:8081/rest/mscovid/estadoPais?pais=Chile'"
                 }
             }
         }
