@@ -25,7 +25,7 @@ pipeline {
                 script {
                     current_stage =env.STAGE_NAME 
                     sh "echo 'Test Code!'"
-                    sh "plsql" descomentar para fallo
+                    //sh "plsql" descomentar para fallo
                     sh "./mvnw clean test -e"
                 }
             }
