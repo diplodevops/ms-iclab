@@ -156,6 +156,52 @@ pipeline {
                 }
             }
         }
+        stage('Paso 12: git merge to main and develop and create tag') {
+            steps {
+            withCredentials([
+                gitUsernamePassword(credentialsId: 'github-jenkins', gitToolName: 'Default')
+                ]) {
+                script{
+                 //git flow steps   
+                //Release branch  has been merged into 'main'
+                sh "git checkout ${env.BRANCH_NAME}"
+                sh "git pull origin"
+                //sh "git clean -f"
+                
+                sh "git checkout main"
+                sh "git fetch origin"
+                sh "git pull origin main"
+                sh "git merge ${env.BRANCH_NAME}"
+                sh "git push origin main"
+                
+                //The release was tagged with release version name
+                //traer el ultimo tag del origin
+                MY_VERSION_TAG = sh(returnStdout: true, script: 'git tag --sort=-creatordate | head -n 1').trim()
+                if (MY_VERSION_TAG == MY_VERSION) {
+                        sh "git tag -d ${MY_VERSION}"
+                        sh "git push --delete origin ${MY_VERSION}"
+                        sh "git tag -a $MY_VERSION -m 'update release from Jenkins'"
+                        sh "git push origin $MY_VERSION"
+                    } else {
+                        sh "git tag -a $MY_VERSION -m 'update release from Jenkins'"
+                        sh "git push origin $MY_VERSION"
+                    }
+                
+                //Release tag has been back-merged into 'develop'
+                sh "git checkout develop"
+                sh "git pull origin develop"
+                sh "git merge ${env.BRANCH_NAME}"
+                sh "git push origin develop"
+                
+                //Release branch  has been remotely deleted from 'origin'
+                sh "git push origin --delete ${env.BRANCH_NAME}"
+                }
+                
+
+
+            }
+            }
+        }
     }
     post{
         success{
