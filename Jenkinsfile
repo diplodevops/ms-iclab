@@ -162,8 +162,11 @@ pipeline {
                 gitUsernamePassword(credentialsId: 'github-jenkins', gitToolName: 'Default')
                 ]) {
                 script{
+                    current_stage =env.STAGE_NAME 
                  //git flow steps   
                 //Release branch  has been merged into 'main'
+                    sh "git config --global user.email 'yrma.2102@gmail.com'"
+                    sh "git config --global user.name 'Yrma'"
                 sh "git checkout ${env.BRANCH_NAME}"
                 sh "git pull origin"
                 //sh "git clean -f"
