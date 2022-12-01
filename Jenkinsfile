@@ -155,7 +155,7 @@ pipeline {
                 ]) {
                 script{
                     current_stage =env.STAGE_NAME 
-                    sh "echo 'Stage 13: Merging branch on main and develop and create tag"
+                    sh "echo 'Stage 13: Merging branch on main and develop and create tag'"
                     //Release branch  has been merged into '$GITHUB_EMAIL'
                     sh "git config --global user.email '$GITHUB_EMAIL'"
                     sh "git config --global user.name '$GITHUB_USERNAME'"
