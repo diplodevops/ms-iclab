@@ -143,7 +143,7 @@ pipeline {
             steps {
                 script {
                     current_stage =env.STAGE_NAME 
-                    sh "echo 'Stage 12: Deploying on production"
+                    sh "echo 'Stage 12: Deploying on production'"
                     sh "echo 'enviado a produccion $MY_VERSION'"
                 }
             }
