@@ -6,6 +6,8 @@ def current_stage
 pipeline {
     agent any
     environment {
+        GITHUB_EMAIL = credentials('GITHUB_EMAIL')
+        GITHUB_USERNAME = credentials('GITHUB_USERNAME')
         GRUPO_CHANNEL = 'D045253KTEZ'
         NOMBRE_GRUPO = 'Grupo 7'
     }
@@ -14,8 +16,7 @@ pipeline {
             steps {
                 script {
                     current_stage =env.STAGE_NAME 
-                    sh "echo 'Compile Code'"
-                    // Run Maven on a Unix agent.
+                    sh "echo 'Stage 1: Compiling code!'"
                     sh "./mvnw clean compile -e"
                 }
             }
@@ -24,7 +25,7 @@ pipeline {
             steps {
                 script {
                     current_stage =env.STAGE_NAME 
-                    sh "echo 'Test Code!'"
+                    sh "echo 'Stage 2: Testing code!'"
                     //sh "plsql" descomentar para fallo
                     sh "./mvnw clean test -e"
                 }
@@ -34,8 +35,7 @@ pipeline {
             steps {
                 script {
                     current_stage =env.STAGE_NAME 
-                    sh "echo 'Build .Jar!'"
-                    // Run Maven on a Unix agent.
+                    sh "echo 'Stage 3: Building .Jar file!'"
                     sh "./mvnw clean package -e"
                 }
             }
@@ -44,8 +44,8 @@ pipeline {
             steps {
                 script {
                     current_stage =env.STAGE_NAME 
-                    sh "echo 'Running .Jar file!'"
-                    sh 'nohup bash ./mvnw spring-boot:run  & >/dev/null'
+                    sh "echo 'Stage 4: Running .Jar file!'"
+                    sh "nohup bash ./mvnw spring-boot:run  & >/dev/null"
                 }
             }
         }
@@ -53,8 +53,9 @@ pipeline {
             steps {
                 script {
                     current_stage =env.STAGE_NAME 
+                    sh "echo 'Stage 5: Testing deploy!'"
                     sh "sleep 10"
-                    sh "curl -X GET 'http://jenkins:8081/rest/mscovid/estadoPais?pais=Chile'"
+                    sh "curl -X GET 'http://localhost:8081/rest/mscovid/estadoPais?pais=Chile'"
                 }
             }
         }
@@ -62,10 +63,9 @@ pipeline {
             steps {
                 script {
                     current_stage =env.STAGE_NAME 
-                    sh '''
-                        echo 'Process Spring Boot Java: ' $(pidof java | awk '{print $1}')
-                        sleep 20
-                        kill -9 $(pidof java | awk '{print $1}')   '''
+                    sh "echo 'Stage 6: Stopping jar running'"
+                    sh "sleep 10"
+                    sh "kill -9 $(pidof java | awk '{print $1}')"
                 }
             }
         }
@@ -74,7 +74,7 @@ pipeline {
                 script {
                     current_stage =env.STAGE_NAME 
                     withSonarQubeEnv('sonarqube') {                   
-                        sh "echo 'Llamando a sonar Service!!'"
+                        sh "echo 'Stage 7: Static code analysis in Sonar'"
                         sh 'sh mvnw clean verify sonar:sonar -Dsonar.projectKey=com.devopsusach2020:DevOpsUsach2020'
                     }
                 }
@@ -84,10 +84,8 @@ pipeline {
             steps {
                 script {
                     current_stage =env.STAGE_NAME 
-                    //obteniendo version del release
+                    sh "echo 'Stage 8:Uploading artifact to Nexus'"
                     MY_VERSION = env.BRANCH_NAME.substring(8)
-                    sh "echo ${MY_VERSION}"
-
                     nexusPublisher nexusInstanceId: 'maven-ceres-repository',
                         nexusRepositoryId: 'maven-usach-ceres',
                         packages: [
@@ -113,15 +111,9 @@ pipeline {
             steps {
                 script {
                     current_stage =env.STAGE_NAME 
+                    sh "echo 'Stage 9:Downloading artifact from Nexus'"                    
                     MY_VERSION = env.BRANCH_NAME.substring(8)
-                    sh "echo ${MY_VERSION}"
-                    //sh ' curl -X GET -u $NEXUS_PASSWORD "http://nexus:8081/repository/maven-usach-ceres/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar" -O'
-                    //DESCARGANDO LA ULTIMA VERSION JAR pero no me muestra el nombre del jar
-                    //sh 'curl -L -X GET -u $NEXUS_PASSWORD "http://nexus:8081/service/rest/v1/search/assets/download?sort=version&repository=maven-usach-ceres&maven.groupId=com.devopsusach2020&maven.artifactId=DevOpsUsach2020&maven.extension=jar" --output myLastJar.jar'
-                    //otra opcion es obtener la version desde el ultimo tag
-                    //MY_VERSION = sh(returnStdout: true, script: 'git tag --sort=-creatordate | head -n 1').trim()
                     MY_EXTENSION = ".jar"                    
-                    //-u $NEXUS_PASSWORD 
                     sh "curl -X GET 'http://nexus:8081/repository/maven-usach-ceres/com/devopsusach2020/DevOpsUsach2020/$MY_VERSION/DevOpsUsach2020-$MY_VERSION$MY_EXTENSION' -O"
 
                 }
@@ -130,7 +122,8 @@ pipeline {
         stage('Paso 10: Levantar y testear Artefacto Jar obtenido de nexus') {
             steps {
                 script {
-                    NOMBRE_STAGE = 'Levantar y testear Artefacto Jar obtenido de nexus'
+                    current_stage =env.STAGE_NAME 
+                    sh "echo 'Stage 10:Testing artifact downloaded from Nexus'"                    
                     sh "nohup java -jar DevOpsUsach2020-$MY_VERSION$MY_EXTENSION & >/dev/null"
                     sh "sleep 20 && curl -X GET 'http://jenkins:8081/rest/mscovid/test?msg=testing'"
                 }
@@ -140,47 +133,44 @@ pipeline {
             steps {
                 script {
                     current_stage =env.STAGE_NAME 
-                    sh '''
-                    echo 'Process Java .jar: ' $(pidof java | awk '{print $1}')
-                    sleep 20
-                    kill -9 $(pidof java | awk '{print $1}')
-                '''
+                    sh "echo 'Stage 11: Stopping artifact')"
+                    sh "sleep 10"
+                    sh "kill -9 $(pidof java | awk '{print $1}')"
                 }
             }
         }
-        stage('Paso 12: Deploy Prod') {
+        stage('Paso 12: Desplegar en Produccion') {
             steps {
                 script {
                     current_stage =env.STAGE_NAME 
-                    sh "echo 'enviado a PROD $MY_VERSION'"
+                    sh "echo 'Stage 12: Deploying on production"
+                    sh "echo 'enviado a produccion $MY_VERSION'"
                 }
             }
         }
-        stage('Paso 12: git merge to main and develop and create tag') {
+        stage('Paso 13: Hacer merge con develop y main y aplicar tag') {
             steps {
             withCredentials([
                 gitUsernamePassword(credentialsId: 'github-jenkins', gitToolName: 'Default')
                 ]) {
                 script{
                     current_stage =env.STAGE_NAME 
-                 //git flow steps   
-                //Release branch  has been merged into 'main'
-                    sh "git config --global user.email 'yrma.2102@gmail.com'"
-                    sh "git config --global user.name 'Yrma'"
-                sh "git checkout ${env.BRANCH_NAME}"
-                sh "git pull origin"
-                //sh "git clean -f"
+                    sh "echo 'Stage 13: Merging branch on main and develop and create tag"
+                    //Release branch  has been merged into '$GITHUB_EMAIL'
+                    sh "git config --global user.email '$GITHUB_EMAIL'"
+                    sh "git config --global user.name '$GITHUB_USERNAME'"
+                    sh "git checkout ${env.BRANCH_NAME}"
+                    sh "git pull origin"
+
+                    sh "git checkout main"
+                    sh "git fetch origin"
+                    sh "git pull origin main"
+                    sh "git merge ${env.BRANCH_NAME}"
+                    sh "git push origin main"
                 
-                sh "git checkout main"
-                sh "git fetch origin"
-                sh "git pull origin main"
-                sh "git merge ${env.BRANCH_NAME}"
-                sh "git push origin main"
-                
-                //The release was tagged with release version name
-                //traer el ultimo tag del origin
-                MY_VERSION_TAG = sh(returnStdout: true, script: 'git tag --sort=-creatordate | head -n 1').trim()
-                if (MY_VERSION_TAG == MY_VERSION) {
+                    //traer el ultimo tag del origin
+                    MY_VERSION_TAG = sh(returnStdout: true, script: 'git tag --sort=-creatordate | head -n 1').trim()
+                    if (MY_VERSION_TAG == MY_VERSION) {
                         sh "git tag -d ${MY_VERSION}"
                         sh "git push --delete origin ${MY_VERSION}"
                         sh "git tag -a $MY_VERSION -m 'update release from Jenkins'"
@@ -190,18 +180,15 @@ pipeline {
                         sh "git push origin $MY_VERSION"
                     }
                 
-                //Release tag has been back-merged into 'develop'
-                sh "git checkout develop"
-                sh "git pull origin develop"
-                sh "git merge ${env.BRANCH_NAME}"
-                sh "git push origin develop"
-                
-                //Release branch  has been remotely deleted from 'origin'
-                sh "git push origin --delete ${env.BRANCH_NAME}"
-                }
-                
+                    //Release tag has been back-merged into 'develop'
+                    sh "git checkout develop"
+                    sh "git pull origin develop"
+                    sh "git merge ${env.BRANCH_NAME}"
+                    sh "git push origin develop"
 
-
+                    //Release branch  has been remotely deleted from 'origin'
+                    sh "git push origin --delete ${env.BRANCH_NAME}"
+                    }
             }
             }
         }
