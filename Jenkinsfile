@@ -135,7 +135,7 @@ pipeline {
                     current_stage =env.STAGE_NAME 
                     sh "echo 'Stage 11: Stopping artifact')"
                     sh "sleep 10"
-                    sh "kill -9 $(pidof java | awk '{print $1}')"
+                    sh "kill -9 $(pidof java | awk ''{print $1}'')"
                 }
             }
         }
