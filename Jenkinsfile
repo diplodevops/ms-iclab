@@ -242,11 +242,11 @@ pipeline {
         success{
             script{
                     current_stage = "Post Build"
-                    slackSend color: 'good', message: "[${NOMBRE_GRUPO}] [${env.JOB_NAME}][Rama : ${env.BRANCH_NAME}] [Stage :${current_stage}][Resultado: Éxito/Success](<${env.BUILD_URL}|Detalle>)${build_duration_msg}", tokenCredentialId: 'id-token-slack'
+                    slackSend color: 'good', message: "[${NOMBRE_GRUPO}] [${env.JOB_NAME}][Rama : ${env.BRANCH_NAME}] [Stage :${current_stage}][Resultado: ${currentBuild.result}](<${env.BUILD_URL}|Detalle>)${build_duration_msg}", tokenCredentialId: 'id-token-slack'
                 }
             }
         failure{
-            slackSend color: 'danger', message: "[${NOMBRE_GRUPO}] [${env.JOB_NAME}][Rama : ${env.BRANCH_NAME}] [Stage :${current_stage}][Resultado:Error/Fail](<${env.BUILD_URL}|Detalle>)${build_duration_msg}", tokenCredentialId: 'id-token-slack'
+            slackSend color: 'danger', message: "[${NOMBRE_GRUPO}] [${env.JOB_NAME}][Rama : ${env.BRANCH_NAME}] [Stage :${current_stage}][Resultado:${currentBuild.result}](<${env.BUILD_URL}|Detalle>)${build_duration_msg}", tokenCredentialId: 'id-token-slack'
         }
     }
 }
