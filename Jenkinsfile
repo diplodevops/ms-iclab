@@ -3,6 +3,7 @@ def jsonParse(def json) {
     new groovy.json.JsonSlurperClassic().parseText(json)
 }
 def current_stage
+def build_duration_msg
 pipeline {
     agent any
     environment {
@@ -18,6 +19,7 @@ pipeline {
                     current_stage =env.STAGE_NAME 
                     sh "echo 'Stage 1: Compiling code!'"
                     sh "./mvnw clean compile -e"
+                    build_duration_msg = build_duration_msg + current_stage + " : "  + currentBuild.durationString \n
                 }
             }
         }
@@ -28,6 +30,7 @@ pipeline {
                     sh "echo 'Stage 2: Testing code!'"
                     //sh "plsql" descomentar para fallo
                     sh "./mvnw clean test -e"
+                    build_duration_msg = build_duration_msg + current_stage + " : "  + currentBuild.durationString \n
                 }
             }
         }
@@ -37,6 +40,7 @@ pipeline {
                     current_stage =env.STAGE_NAME 
                     sh "echo 'Stage 3: Building .Jar file!'"
                     sh "./mvnw clean package -e"
+                    build_duration_msg = build_duration_msg + current_stage + " : "  + currentBuild.durationString \n
                 }
             }
         }
@@ -195,10 +199,10 @@ pipeline {
     }
     post{
         success{
-            slackSend color: 'good', message: "[${NOMBRE_GRUPO}] [${env.JOB_NAME}][Rama : ${env.BRANCH_NAME}] [Stage :${current_stage}][Resultado: Éxito/Success](<${env.BUILD_URL}|Detalle>)", tokenCredentialId: 'id-token-slack'
+            slackSend color: 'good', message: "[${NOMBRE_GRUPO}] [${env.JOB_NAME}][Rama : ${env.BRANCH_NAME}] [Stage :${current_stage}][Resultado: Éxito/Success]${build_duration_stage}(<${env.BUILD_URL}|Detalle>)", tokenCredentialId: 'id-token-slack'
         }
         failure{
-            slackSend color: 'danger', message: "[${NOMBRE_GRUPO}] [${env.JOB_NAME}][Rama : ${env.BRANCH_NAME}] [Stage :${current_stage}][Resultado:Error/Fail](<${env.BUILD_URL}|Detalle>)", tokenCredentialId: 'id-token-slack'
+            slackSend color: 'danger', message: "[${NOMBRE_GRUPO}] [${env.JOB_NAME}][Rama : ${env.BRANCH_NAME}] [Stage :${current_stage}][Resultado:Error/Fail]${build_duration_stage}(<${env.BUILD_URL}|Detalle>)", tokenCredentialId: 'id-token-slack'
         }
     }
 }
