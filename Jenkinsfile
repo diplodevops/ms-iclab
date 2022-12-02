@@ -208,12 +208,12 @@ pipeline {
                     //traer el ultimo tag del origin
                     MY_VERSION_TAG = sh(returnStdout: true, script: 'git tag --sort=-creatordate | head -n 1').trim()
                     if (MY_VERSION_TAG == MY_VERSION) {
-                   //     sh "git tag -d ${MY_VERSION}"
+                        sh "git tag -d ${MY_VERSION}"
                         sh "git push --delete origin ${MY_VERSION}"
-                     //   sh "git tag -a $MY_VERSION -m 'update release from Jenkins'"
+                        sh "git tag -a $MY_VERSION -m 'update release from Jenkins'"
                         sh "git push origin $MY_VERSION"
                     } else {
-                      //  sh "git tag -a $MY_VERSION -m 'update release from Jenkins'"
+                        sh "git tag -a $MY_VERSION -m 'update release from Jenkins'"
                         sh "git push origin $MY_VERSION"
                     }
                 
@@ -224,7 +224,7 @@ pipeline {
                     sh "git push origin develop"
 
                     //Release branch  has been remotely deleted from 'origin'
-                   // sh "git push origin --delete ${env.BRANCH_NAME}"
+                     sh "git push origin --delete ${env.BRANCH_NAME}"
                      end = System.currentTimeMillis()
                      build_duration_msg = build_duration_msg +  "*" + current_stage + "*" + " : "  + Util.getTimeSpanString(end - start) +"\n"
                     }
