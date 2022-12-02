@@ -4,7 +4,7 @@ def jsonParse(def json) {
     new groovy.json.JsonSlurperClassic().parseText(json)
 }
 def current_stage
-def build_duration_msg = "\n *Detail by stage* \n"
+def build_duration_msg = "\n *Detail by Stage* \n"
 pipeline {
     agent any
     environment {
@@ -184,7 +184,7 @@ pipeline {
                 }
             }
         }
-        stage('Paso 13: Hacer merge con develop y main y aplicar tag') {
+        stage('Paso 13: Merge y Tag en Github') {
             steps {
             withCredentials([
                 gitUsernamePassword(credentialsId: 'github-jenkins', gitToolName: 'Default')
@@ -240,8 +240,11 @@ pipeline {
             }            
         }
         success{
-            slackSend color: 'good', message: "[${NOMBRE_GRUPO}] [${env.JOB_NAME}][Rama : ${env.BRANCH_NAME}] [Stage :${current_stage}][Resultado: Éxito/Success](<${env.BUILD_URL}|Detalle>)${build_duration_msg}", tokenCredentialId: 'id-token-slack'
-        }
+            script{
+                    current_stage = "Post Build"
+                    slackSend color: 'good', message: "[${NOMBRE_GRUPO}] [${env.JOB_NAME}][Rama : ${env.BRANCH_NAME}] [Stage :${current_stage}][Resultado: Éxito/Success](<${env.BUILD_URL}|Detalle>)${build_duration_msg}", tokenCredentialId: 'id-token-slack'
+                }
+            }
         failure{
             slackSend color: 'danger', message: "[${NOMBRE_GRUPO}] [${env.JOB_NAME}][Rama : ${env.BRANCH_NAME}] [Stage :${current_stage}][Resultado:Error/Fail](<${env.BUILD_URL}|Detalle>)${build_duration_msg}", tokenCredentialId: 'id-token-slack'
         }
