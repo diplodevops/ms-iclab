@@ -236,7 +236,9 @@ pipeline {
     }
     post{
         always{
-            build_duration_msg = build_duration_msg + "\n *Total build time:* " +  "${currentBuild.durationString}".replaceAll(' and counting', "")
+            script{
+                build_duration_msg = build_duration_msg + "\n *Total build time:* " +  "${currentBuild.durationString}".replaceAll(' and counting', "")
+            }            
         }
         success{
             slackSend color: 'good', message: "[${NOMBRE_GRUPO}] [${env.JOB_NAME}][Rama : ${env.BRANCH_NAME}] [Stage :${current_stage}][Resultado: Éxito/Success](<${env.BUILD_URL}|Detalle>)${build_duration_msg}", tokenCredentialId: 'id-token-slack'
