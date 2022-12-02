@@ -181,12 +181,12 @@ pipeline {
                     //traer el ultimo tag del origin
                     MY_VERSION_TAG = sh(returnStdout: true, script: 'git tag --sort=-creatordate | head -n 1').trim()
                     if (MY_VERSION_TAG == MY_VERSION) {
-                        sh "git tag -d ${MY_VERSION}"
+                   //     sh "git tag -d ${MY_VERSION}"
                         sh "git push --delete origin ${MY_VERSION}"
-                        sh "git tag -a $MY_VERSION -m 'update release from Jenkins'"
+                     //   sh "git tag -a $MY_VERSION -m 'update release from Jenkins'"
                         sh "git push origin $MY_VERSION"
                     } else {
-                        sh "git tag -a $MY_VERSION -m 'update release from Jenkins'"
+                      //  sh "git tag -a $MY_VERSION -m 'update release from Jenkins'"
                         sh "git push origin $MY_VERSION"
                     }
                 
