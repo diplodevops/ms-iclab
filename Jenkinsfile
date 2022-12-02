@@ -226,9 +226,10 @@ pipeline {
 
                     //Release branch  has been remotely deleted from 'origin'
                    // sh "git push origin --delete ${env.BRANCH_NAME}"
+                     end = System.currentTimeMillis()
+                     build_duration_msg = build_duration_msg +  "*" + current_stage + "*" + " : "  + Util.getTimeSpanString(end - start) +"\n"
                     }
-                    end = System.currentTimeMillis()
-                    build_duration_msg = build_duration_msg +  "*" + current_stage + "*" + " : "  + Util.getTimeSpanString(end - start) +"\n"
+
             }
             }
         }
