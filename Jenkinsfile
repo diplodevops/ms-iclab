@@ -40,7 +40,7 @@ pipeline {
                     current_stage =env.STAGE_NAME 
                     sh "echo 'Stage 3: Building .Jar file!'"
                     sh "./mvnw clean package -e"
-                    build_duration_msg = build_duration_msg + current_stage + " : "  + currentBuild.durationString \n
+                    build_duration_msg = build_duration_msg + current_stage + " : "  + currentBuild.durationString + "\n"
                 }
             }
         }
