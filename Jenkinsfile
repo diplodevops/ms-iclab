@@ -1,5 +1,5 @@
 import groovy.json.JsonSlurperClassic
-import hudson.Util.*
+import hudson.Util;
 def jsonParse(def json) {
     new groovy.json.JsonSlurperClassic().parseText(json)
 }
