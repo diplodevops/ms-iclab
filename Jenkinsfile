@@ -33,7 +33,6 @@ pipeline {
                     current_stage =env.STAGE_NAME 
                     sh "echo 'Stage 2: Testing code!'"                    
                     sh "./mvnw clean test -e"
-                    sh "echo ${build_duration_msg}"
                     end = System.currentTimeMillis()
                     build_duration_msg = + build_duration_msg + "*" + current_stage + "*" + " : "  + Util.getTimeSpanString(end - start) +"\n"
                 }
