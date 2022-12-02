@@ -3,7 +3,7 @@ def jsonParse(def json) {
     new groovy.json.JsonSlurperClassic().parseText(json)
 }
 def current_stage
-def build_duration_msg
+def build_duration_msg = "\n *Detail by stage* \n"
 pipeline {
     agent any
     environment {
@@ -16,23 +16,26 @@ pipeline {
         stage("Paso 1: Compilar"){
             steps {
                 script {
+                    start = System.currentTimeMillis()
                     current_stage =env.STAGE_NAME 
                     sh "echo 'Stage 1: Compiling code!'"
                     sh "./mvnw clean compile -e"
-                    sh "echo ${build_duration_msg}"
-                    build_duration_msg = build_duration_msg + current_stage + " : "  + currentBuild.durationString +"\n"
+                    end = System.currentTimeMillis()
+                    build_duration_msg = "*" current_stage + "*" + " : "  + ${Util.getTimeSpanString(start - end)} +"\n"
                 }
             }
         }
         stage("Paso 2: Testear"){
             steps {
                 script {
+                    start = System.currentTimeMillis()
                     current_stage =env.STAGE_NAME 
                     sh "echo 'Stage 2: Testing code!'"
-                    //sh "plsql" descomentar para fallo
+                    sh "plsql" descomentar para fallo
                     sh "./mvnw clean test -e"
                     sh "echo ${build_duration_msg}"
-                    build_duration_msg = build_duration_msg + current_stage + " : "  + currentBuild.durationString +"\n"
+                    end = System.currentTimeMillis()
+                    build_duration_msg = + build_duration_msg + "*" current_stage + "*" + " : "  + ${Util.getTimeSpanString(start - end)} +"\n"
                 }
             }
         }
@@ -40,6 +43,7 @@ pipeline {
             steps {
                 script {
                     current_stage =env.STAGE_NAME 
+                    sh "plsql" descomentar para fallo
                     sh "echo 'Stage 3: Building .Jar file!'"
                     sh "./mvnw clean package -e"
                     build_duration_msg = build_duration_msg + current_stage + " : "  + currentBuild.durationString + "\n"
