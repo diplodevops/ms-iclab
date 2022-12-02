@@ -19,7 +19,7 @@ pipeline {
                     current_stage =env.STAGE_NAME 
                     sh "echo 'Stage 1: Compiling code!'"
                     sh "./mvnw clean compile -e"
-                    build_duration_msg = build_duration_msg + current_stage + " : "  + currentBuild.durationString \n
+                    build_duration_msg = build_duration_msg + current_stage + " : "  + currentBuild.durationString +"\n"
                 }
             }
         }
@@ -30,7 +30,7 @@ pipeline {
                     sh "echo 'Stage 2: Testing code!'"
                     //sh "plsql" descomentar para fallo
                     sh "./mvnw clean test -e"
-                    build_duration_msg = build_duration_msg + current_stage + " : "  + currentBuild.durationString \n
+                    build_duration_msg = build_duration_msg + current_stage + " : "  + currentBuild.durationString +"\n"
                 }
             }
         }
