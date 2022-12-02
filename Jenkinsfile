@@ -197,7 +197,7 @@ pipeline {
                     sh "git push origin develop"
 
                     //Release branch  has been remotely deleted from 'origin'
-                    sh "git push origin --delete ${env.BRANCH_NAME}"
+                   // sh "git push origin --delete ${env.BRANCH_NAME}"
                     }
             }
             }
