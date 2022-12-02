@@ -21,7 +21,7 @@ pipeline {
                     sh "echo 'Stage 1: Compiling code!'"
                     sh "./mvnw clean compile -e"
                     end = System.currentTimeMillis()
-                    build_duration_msg =  "*" + current_stage + "*" + " : "  + ${Util.getTimeSpanString(start - end)} +"\n"
+                    build_duration_msg =  "*" + current_stage + "*" + " : "  + Util.getTimeSpanString(start - end) +"\n"
                 }
             }
         }
@@ -35,7 +35,7 @@ pipeline {
                     sh "./mvnw clean test -e"
                     sh "echo ${build_duration_msg}"
                     end = System.currentTimeMillis()
-                    build_duration_msg = + build_duration_msg + "*" + current_stage + "*" + " : "  + ${Util.getTimeSpanString(start - end)} +"\n"
+                    build_duration_msg = + build_duration_msg + "*" + current_stage + "*" + " : "  + Util.getTimeSpanString(start - end) +"\n"
                 }
             }
         }
