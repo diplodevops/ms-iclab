@@ -34,7 +34,7 @@ pipeline {
                     sh "echo 'Stage 2: Testing code!'"                    
                     sh "./mvnw clean test -e"
                     end = System.currentTimeMillis()
-                    build_duration_msg = + build_duration_msg + "*" + current_stage + "*" + " : "  + Util.getTimeSpanString(end - start) +"\n"
+                    build_duration_msg = build_duration_msg + "*" + current_stage + "*" + " : "  + Util.getTimeSpanString(end - start) +"\n"
                 }
             }
         }
