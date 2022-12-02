@@ -22,7 +22,7 @@ pipeline {
                     sh "echo 'Stage 1: Compiling code!'"
                     sh "./mvnw clean compile -e"
                     end = System.currentTimeMillis()
-                    build_duration_msg =  "*" + current_stage + "*" + " : "  + Util.getTimeSpanString(start - end) +"\n"
+                    build_duration_msg = build_duration_msg +  "*" + current_stage + "*" + " : "  + Util.getTimeSpanString(end - start) +"\n"
                 }
             }
         }
@@ -31,12 +31,11 @@ pipeline {
                 script {
                     start = System.currentTimeMillis()
                     current_stage =env.STAGE_NAME 
-                    sh "echo 'Stage 2: Testing code!'"
-                    sh "plsql" descomentar para fallo
+                    sh "echo 'Stage 2: Testing code!'"                    
                     sh "./mvnw clean test -e"
                     sh "echo ${build_duration_msg}"
                     end = System.currentTimeMillis()
-                    build_duration_msg = + build_duration_msg + "*" + current_stage + "*" + " : "  + Util.getTimeSpanString(start - end) +"\n"
+                    build_duration_msg = + build_duration_msg + "*" + current_stage + "*" + " : "  + Util.getTimeSpanString(end - start) +"\n"
                 }
             }
         }
@@ -44,7 +43,7 @@ pipeline {
             steps {
                 script {
                     current_stage =env.STAGE_NAME 
-                    sh "plsql" descomentar para fallo
+                    sh "plsql" //descomentar para fallo
                     sh "echo 'Stage 3: Building .Jar file!'"
                     sh "./mvnw clean package -e"
                     build_duration_msg = build_duration_msg + current_stage + " : "  + currentBuild.durationString + "\n"
