@@ -17,7 +17,7 @@ pipeline {
         stage("Paso 0"){
             when { 
                 anyOf {
-                    branch 'featu*'
+                    branch 'feature/*'
                 }
             }
             steps {
