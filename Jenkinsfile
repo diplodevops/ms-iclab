@@ -173,6 +173,7 @@ pipeline {
             }
         }
         stage('Paso 12: Desplegar en Produccion') {
+            when { anyOf { branch 'release*' } }
             steps {
                 script {
                     start = System.currentTimeMillis()
@@ -185,6 +186,7 @@ pipeline {
             }
         }
         stage('Paso 13: Merge y Tag en Github') {
+            when { anyOf { branch 'release*' } }
             steps {
             withCredentials([
                 gitUsernamePassword(credentialsId: 'github-jenkins', gitToolName: 'Default')
@@ -192,7 +194,7 @@ pipeline {
                 script{
                     start = System.currentTimeMillis()
                     current_stage =env.STAGE_NAME 
-                    sh "echo 'Stage 13: Merging branch on main and develop and create tag'"
+                    sh "echo 'Stage 13: Merging branch release on main and develop and create tag'"
                     //Release branch  has been merged into '$GITHUB_EMAIL'
                     sh "git config --global user.email '$GITHUB_EMAIL'"
                     sh "git config --global user.name '$GITHUB_USERNAME'"
@@ -225,6 +227,37 @@ pipeline {
 
                     //Release branch  has been remotely deleted from 'origin'
                      sh "git push origin --delete ${env.BRANCH_NAME}"
+                     end = System.currentTimeMillis()
+                     build_duration_msg = build_duration_msg +  "*" + current_stage + "*" + " : "  + Util.getTimeSpanString(end - start) +"\n"
+                    }
+
+            }
+            }
+        }
+        stage('Paso 14: Merge con develop en Github') {
+            when { anyOf { branch 'feature*' } }
+            steps {
+            withCredentials([
+                gitUsernamePassword(credentialsId: 'github-jenkins', gitToolName: 'Default')
+                ]) {
+                script{
+                    start = System.currentTimeMillis()
+                    current_stage =env.STAGE_NAME 
+                    sh "echo 'Stage 13: Merging branch feature on develop'"
+                    //Release branch  has been merged into '$GITHUB_EMAIL'
+                    sh "git config --global user.email '$GITHUB_EMAIL'"
+                    sh "git config --global user.name '$GITHUB_USERNAME'"
+                    sh "git checkout ${env.BRANCH_NAME}"
+                    sh "git pull origin"
+                    
+                    //merge into develop
+                    sh "git checkout develop"
+                    sh "git pull origin develop"
+                    sh "git merge ${env.BRANCH_NAME}"
+                    sh "git push origin develop"
+
+                    //Release branch  has been remotely deleted from 'origin'
+                     //sh "git push origin --delete ${env.BRANCH_NAME}"
                      end = System.currentTimeMillis()
                      build_duration_msg = build_duration_msg +  "*" + current_stage + "*" + " : "  + Util.getTimeSpanString(end - start) +"\n"
                     }
