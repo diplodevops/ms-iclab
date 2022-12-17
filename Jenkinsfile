@@ -68,7 +68,7 @@ pipeline {
                     start = System.currentTimeMillis()
                     current_stage =env.STAGE_NAME 
                     sh "echo 'Stage 5: Testing deploy!'"
-                    sh "sleep 10"
+                    sh "sleep 20"
                     sh "curl -X GET 'http://localhost:8081/rest/mscovid/estadoPais?pais=Chile'"
                     end = System.currentTimeMillis()
                     build_duration_msg = build_duration_msg +  "*" + current_stage + "*" + " : "  + Util.getTimeSpanString(end - start) +"\n"
@@ -257,7 +257,7 @@ pipeline {
                     sh "git push origin develop"
 
                     //Release branch  has been remotely deleted from 'origin'
-                     //sh "git push origin --delete ${env.BRANCH_NAME}"
+                     sh "git push origin --delete ${env.BRANCH_NAME}"
                      end = System.currentTimeMillis()
                      build_duration_msg = build_duration_msg +  "*" + current_stage + "*" + " : "  + Util.getTimeSpanString(end - start) +"\n"
                     }
