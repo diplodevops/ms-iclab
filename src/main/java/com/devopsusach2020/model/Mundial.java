@@ -32,4 +32,8 @@ public class Mundial implements Serializable {
 		this.totalrecovered = totalRecovered;
 	}	
 
+	public long getSerialVersionUID() {
+		return serialVersionUID;
+	}
+
 }
