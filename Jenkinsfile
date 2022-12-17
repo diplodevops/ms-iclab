@@ -14,18 +14,6 @@ pipeline {
         NOMBRE_GRUPO = 'Grupo 7'
     }
     stages {
-        stage("Paso 0"){
-            when { 
-                anyOf {
-                    branch 'feature/*'
-                }
-            }
-            steps {
-                script {
-                    sh "echo  'Entre con una feature'"
-                }
-            }
-        }
         stage("Paso 1: Compilar"){
             steps {
                 script {
@@ -198,7 +186,7 @@ pipeline {
             }
         }
         stage('Paso 13: Merge y Tag en Github') {
-            when { anyOf { branch 'release*' } }
+            when { anyOf { branch 'release/*' } }
             steps {
             withCredentials([
                 gitUsernamePassword(credentialsId: 'github-jenkins', gitToolName: 'Default')
@@ -247,7 +235,7 @@ pipeline {
             }
         }
         stage('Paso 14: Merge con develop en Github') {
-            when { branch 'feature*' }
+            when { branch 'feature/*' }
             steps {
             withCredentials([
                 gitUsernamePassword(credentialsId: 'github-jenkins', gitToolName: 'Default')
