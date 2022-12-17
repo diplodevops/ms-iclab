@@ -15,7 +15,11 @@ pipeline {
     }
     stages {
         stage("Paso 0"){
-            when { branch 'feature*' }
+            when { 
+                anyOf {
+                    branch 'featu*'
+                }
+            }
             steps {
                 script {
                     sh "echo  'Entre con una feature'"
