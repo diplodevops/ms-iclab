@@ -2,7 +2,7 @@
 
 =======
 ## Windows
-V1.0.7
+V1.0.7 Estado mundial
 =======
 ### Compile Code
 * ./mvnw.cmd clean compile -e

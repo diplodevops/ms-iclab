@@ -26,7 +26,7 @@ public class EstadoMundialTest {
 
     @Test
 	void estadoMundialTotalRecovered() {
-		assertEquals(true,rest.ValidaApiCovid().getStatusAPI());
+		
 		assertTrue(rest.getTotalMundial().getTotalRecovered() >= 0);
 	}
 
