@@ -3,6 +3,7 @@ package com.devopsusach2020.rest;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.devopsusach2020.model.Pais;
 import com.devopsusach2020.model.Mundial;
+import com.devopsusach2020.model.Valida;
 import com.google.gson.Gson;
 
 @RestController
@@ -64,4 +66,28 @@ public class RestData {
 		response.setTotalRecovered(estado.getTotalRecovered());
 		return response;
 	}
+	@GetMapping(path = "/checkAPI", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Valida ValidaApiCovid(){
+		
+		LOGGER.log(Level.INFO, "Validación API COVID");
+		RestTemplate restTemplate = new RestTemplate();		
+		Valida valida = new Valida();
+		
+		try{
+			ResponseEntity<String> call = restTemplate.getForEntity("https://api.covid19api.com/", String.class);
+			HttpStatus responseCode = call.getStatusCode();
+			if(responseCode.value() == 200)
+			{
+				valida.setStatusAPI(true);
+			}
+			else{
+				valida.setStatusAPI(false);
+			}
+		}
+		catch(Exception ex){
+			valida.setStatusAPI(false);
+		}
+
+		return valida;
+	}	
 }
