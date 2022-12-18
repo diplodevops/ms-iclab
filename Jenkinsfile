@@ -75,12 +75,24 @@ pipeline {
                 }
             }
         }
-        stage("Paso 6: stop Testing deploy"){
+		stage("Paso 6: Running postman tests"){
             steps {
                 script {
                     start = System.currentTimeMillis()
                     current_stage =env.STAGE_NAME 
-                    sh "echo 'Stage 6: Stopping jar running'"
+                    sh "echo 'Stage 6: Testing deploy!'"
+                    sh "newman run test_api_covid.postman_collection.json"
+                    end = System.currentTimeMillis()
+                    build_duration_msg = build_duration_msg +  "*" + current_stage + "*" + " : "  + Util.getTimeSpanString(end - start) +"\n"
+                }
+            }
+        }
+        stage("Paso 7: stop Testing deploy"){
+            steps {
+                script {
+                    start = System.currentTimeMillis()
+                    current_stage =env.STAGE_NAME 
+                    sh "echo 'Stage 7: Stopping jar running'"
                     sh "sleep 10"
                     sh '''kill -9 $(pidof java | awk '{print $1}')'''
                     end = System.currentTimeMillis()
@@ -88,13 +100,13 @@ pipeline {
                 }
             }
         }
-        stage("Paso 7: Analizar en Sonar"){
+        stage("Paso 8: Analizar en Sonar"){
             steps {
                 script {
                     start = System.currentTimeMillis()
                     current_stage =env.STAGE_NAME 
                     withSonarQubeEnv('sonarqube') {                   
-                        sh "echo 'Stage 7: Static code analysis in Sonar'"
+                        sh "echo 'Stage 8: Static code analysis in Sonar'"
                         sh 'sh mvnw clean verify sonar:sonar -Dsonar.projectKey=com.devopsusach2020:DevOpsUsach2020'
                     }
                     end = System.currentTimeMillis()
@@ -102,12 +114,12 @@ pipeline {
                 }
             }
         }
-        stage("Paso 8: Release Subir Artefacto a Nexus"){
+        stage("Paso 9: Release Subir Artefacto a Nexus"){
             steps {
                 script {
                     start = System.currentTimeMillis()
                     current_stage =env.STAGE_NAME 
-                    sh "echo 'Stage 8:Uploading artifact to Nexus'"
+                    sh "echo 'Stage 9:Uploading artifact to Nexus'"
                     MY_VERSION = env.BRANCH_NAME.substring(8)
                     nexusPublisher nexusInstanceId: 'maven-ceres-repository',
                         nexusRepositoryId: 'maven-usach-ceres',
@@ -132,12 +144,12 @@ pipeline {
                 }
             }
         }
-        stage('Paso 9: Descargar ultima version jar de Nexus') {
+        stage('Paso 10: Descargar ultima version jar de Nexus') {
             steps {
                 script {
                     start = System.currentTimeMillis()
                     current_stage =env.STAGE_NAME 
-                    sh "echo 'Stage 9:Downloading artifact from Nexus'"                    
+                    sh "echo 'Stage 10:Downloading artifact from Nexus'"                    
                     MY_VERSION = env.BRANCH_NAME.substring(8)
                     MY_EXTENSION = ".jar"                    
                     sh "curl -X GET 'http://nexus:8081/repository/maven-usach-ceres/com/devopsusach2020/DevOpsUsach2020/$MY_VERSION/DevOpsUsach2020-$MY_VERSION$MY_EXTENSION' -O"
@@ -146,12 +158,12 @@ pipeline {
                 }
             }
         }
-        stage('Paso 10: Levantar y testear Artefacto Jar obtenido de nexus') {
+        stage('Paso 11: Levantar y testear Artefacto Jar obtenido de nexus') {
             steps {
                 script {
                     start = System.currentTimeMillis()
                     current_stage =env.STAGE_NAME 
-                    sh "echo 'Stage 10:Testing artifact downloaded from Nexus'"                    
+                    sh "echo 'Stage 11:Testing artifact downloaded from Nexus'"                    
                     sh "nohup java -jar DevOpsUsach2020-$MY_VERSION$MY_EXTENSION & >/dev/null"
                     sh "sleep 20 && curl -X GET 'http://jenkins:8081/rest/mscovid/test?msg=testing'"
                     end = System.currentTimeMillis()
@@ -159,12 +171,12 @@ pipeline {
                 }
             }
         }
-        stage('Paso 11:Detener Atefacto jar en Jenkins server') {
+        stage('Paso 12:Detener Atefacto jar en Jenkins server') {
             steps {
                 script {
                     start = System.currentTimeMillis()
                     current_stage =env.STAGE_NAME 
-                    sh "echo 'Stage 11: Stopping artifact'"
+                    sh "echo 'Stage 12: Stopping artifact'"
                     sh "sleep 10"
                     sh '''kill -9 $(pidof java | awk '{print $1}')'''
                     end = System.currentTimeMillis()
@@ -172,20 +184,20 @@ pipeline {
                 }
             }
         }
-        stage('Paso 12: Desplegar en Produccion') {
+        stage('Paso 13: Desplegar en Produccion') {
             when { anyOf { branch 'release*' } }
             steps {
                 script {
                     start = System.currentTimeMillis()
                     current_stage =env.STAGE_NAME 
-                    sh "echo 'Stage 12: Deploying on production'"
+                    sh "echo 'Stage 13: Deploying on production'"
                     sh "echo 'enviado a produccion $MY_VERSION'"
                     end = System.currentTimeMillis()
                     build_duration_msg = build_duration_msg +  "*" + current_stage + "*" + " : "  + Util.getTimeSpanString(end - start) +"\n"
                 }
             }
         }
-        stage('Paso 13: Merge y Tag en Github') {
+        stage('Paso 14: Merge y Tag en Github') {
             when { anyOf { branch 'release/*' } }
             steps {
             withCredentials([
@@ -194,7 +206,7 @@ pipeline {
                 script{
                     start = System.currentTimeMillis()
                     current_stage =env.STAGE_NAME 
-                    sh "echo 'Stage 13: Merging branch release on main and develop and create tag'"
+                    sh "echo 'Stage 14: Merging branch release on main and develop and create tag'"
                     //Release branch  has been merged into '$GITHUB_EMAIL'
                     sh "git config --global user.email '$GITHUB_EMAIL'"
                     sh "git config --global user.name '$GITHUB_USERNAME'"
@@ -234,7 +246,7 @@ pipeline {
             }
             }
         }
-        stage('Paso 14: Merge con develop en Github') {
+        stage('Paso 15: Merge con develop en Github') {
             when { branch 'feature/*' }
             steps {
             withCredentials([
@@ -243,7 +255,7 @@ pipeline {
                 script{
                     start = System.currentTimeMillis()
                     current_stage =env.STAGE_NAME 
-                    sh "echo 'Stage 13: Merging branch feature on develop'"
+                    sh "echo 'Stage 15: Merging branch feature on develop'"
                     //Release branch  has been merged into '$GITHUB_EMAIL'
                     sh "git config --global user.email '$GITHUB_EMAIL'"
                     sh "git config --global user.name '$GITHUB_USERNAME'"

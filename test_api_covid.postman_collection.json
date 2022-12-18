@@ -1,0 +1,25 @@
+{
+	"info": {
+		"_postman_id": "cdbb70f8-a9c2-4355-a643-38947c95c602",
+		"name": "Test API Covid",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "estadoPais",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "estadoMundialRespuesta",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
