@@ -1,0 +1,149 @@
+{
+	"info": {
+		"_postman_id": "cdbb70f8-a9c2-4355-a643-38947c95c602",
+		"name": "Test API Covid",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "estadoPais",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							" \"type\": \"object\",\r",
+							" \"properties\":{\r",
+							"    \"deaths\":{\r",
+							"        \"type\" : \"number\"\r",
+							"    },\r",
+							"    \"confirmed\":{\r",
+							"        \"type\": \"number\"\r",
+							"    },\r",
+							"    \"date\":{\r",
+							"        \"type\": \"string\"\r",
+							"    },\r",
+							"    \"mensaje\":{\r",
+							"        \"type\": \"string\"\r",
+							"    },\r",
+							"    \"country\":{\r",
+							"        \"type\": \"string\"\r",
+							"    },\r",
+							"    \"recovered\":{\r",
+							"        \"type\": \"number\"\r",
+							"    },\r",
+							"    \"active\":{\r",
+							"        \"type\": \"number\"\r",
+							"    }\r",
+							" }, \r",
+							" \"required\": [\r",
+							"        \"deaths\",\r",
+							"        \"confirmed\",\r",
+							"        \"date\",\r",
+							"        \"mensaje\",\r",
+							"        \"country\",\r",
+							"        \"recovered\",\r",
+							"        \"active\"\r",
+							"    ]\r",
+							"};\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.expect(pm.response).to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Mensaje == ok\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(15000);\r",
+							"});\r",
+							"pm.test('Schema is valid', function() {\r",
+							"  pm.response.to.have.jsonSchema(schema);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/rest/mscovid/estadoPais?pais=ecuador",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rest",
+						"mscovid",
+						"estadoPais"
+					],
+					"query": [
+						{
+							"key": "pais",
+							"value": "ecuador"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "estadoMundialRespuesta",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							" \"type\": \"object\",\r",
+							" \"properties\":{\r",
+							"    \"totalRecovered\":{\r",
+							"        \"type\" : \"number\"\r",
+							"    },\r",
+							"    \"totalConfirmed\":{\r",
+							"        \"type\": \"number\"\r",
+							"    },\r",
+							"    \"totalDeaths\":{\r",
+							"        \"type\": \"number\"\r",
+							"    }\r",
+							" },\r",
+							"  \"required\": [\r",
+							"        \"totalRecovered\",\r",
+							"        \"totalConfirmed\",\r",
+							"        \"totalDeaths\"\r",
+							"    ] \r",
+							"};\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.expect(pm.response).to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Mensaje == ok\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+							"});\r",
+							"pm.test('Schema is valid', function() {\r",
+							"  pm.response.to.have.jsonSchema(schema);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/rest/mscovid/estadoMundial",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rest",
+						"mscovid",
+						"estadoMundial"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
