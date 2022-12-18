@@ -165,7 +165,8 @@ pipeline {
                     current_stage =env.STAGE_NAME 
                     sh "echo 'Stage 11:Testing artifact downloaded from Nexus'"                    
                     sh "nohup java -jar DevOpsUsach2020-$MY_VERSION$MY_EXTENSION & >/dev/null"
-                    sh "sleep 20 && curl -X GET 'http://jenkins:8081/rest/mscovid/test?msg=testing'"
+                    sh "sleep 20 && curl -X GET 'http://jenkins:8081/rest/mscovid/estadoPais?pais=ecuador'"
+					sh "sleep 20 && curl -X GET 'http://jenkins:8081/rest/mscovid/estadoMundial'"
                     end = System.currentTimeMillis()
                     build_duration_msg = build_duration_msg +  "*" + current_stage + "*" + " : "  + Util.getTimeSpanString(end - start) +"\n"
                 }
@@ -185,7 +186,7 @@ pipeline {
             }
         }
         stage('Paso 13: Desplegar en Produccion') {
-            when { anyOf { branch 'release*' } }
+            when { anyOf { branch 'release/*' } }
             steps {
                 script {
                     start = System.currentTimeMillis()
